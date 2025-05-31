@@ -1,8 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 :root {
-  --text-color-1: #3EB2F8;
-  --text-color-2: #EDF7FE;
+  --blue: #3EB2F8;
+  --light-blue: #caebff;
+  --cream: #EDF7FE;
+  --white: #ffffff;
+  --black: #000000;
 }
 
 body {
@@ -18,27 +21,33 @@ a {
   padding: 8px;
   font-family: "Inter", sans-serif;
   font-weight: 500;
-  color: #000;
-  border: 2px solid #fff;
+  color: var(--black);
+  border: 2px solid var(--white);
   border-radius: 6px;
-  
+
   &:hover {
-    border: 2px solid var(--text-color-1);
-    background: var(--text-color-2);
+    border: 2px solid var(--blue);
+    background: var(--cream);
   }
 
   &:active {
-    border: 2px solid var(--text-color-1);
-    background: var(--text-color-2);
-    background: red;
+    border: 2px solid var(--blue);
+    background: var(--cream);
   }
+}
+
+a.active {
+  border: 2px solid var(--blue);
+  background: var(--cream);
+  background: var(--light-blue);
 }
 
 a span {
   display: inline-block;
-  background-color: var(--text-color-1);
-  color: #fff;
+  background-color: var(--blue);
+  color: var(--white);
   width: 70px;
   padding: 3px 0;
+  margin-right: 20px;
   text-align: center;
 }
