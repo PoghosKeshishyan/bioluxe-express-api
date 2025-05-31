@@ -139,6 +139,7 @@ model Language {
   id    String @id @default(uuid())
   label String
   image String
+  lang  String?
 }
 
 model Slider {
