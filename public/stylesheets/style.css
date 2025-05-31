@@ -26,6 +26,11 @@ a {
     border: 2px solid var(--text-color-1);
     background: var(--text-color-2);
   }
+
+  &:active {
+    border: 2px solid var(--text-color-1);
+    background: var(--text-color-2);
+  }
 }
 
 a span {
