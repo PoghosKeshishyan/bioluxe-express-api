@@ -3,6 +3,7 @@
 :root {
   --blue: #3EB2F8;
   --light-blue: #caebff;
+  --dark-blue: #3eb2f833;
   --cream: #EDF7FE;
   --white: #ffffff;
   --black: #000000;
@@ -11,6 +12,30 @@
 body {
   padding: 50px;
   font-family: Arial;
+}
+
+input[type="search"] {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  font-family: "Inter", sans-serif;
+  border: 2px solid var(--blue);
+  border-radius: 6px;
+  outline: none;
+  background-color: var(--cream);
+  color: var(--black);
+  font-size: 1.1em;
+}
+
+input[type="search"]:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px var(--dark-blue);
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+  cursor: pointer;
+  font-size: 1.1em;
 }
 
 a {
