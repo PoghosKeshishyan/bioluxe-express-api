@@ -2,9 +2,11 @@ const { prisma } = require("../prisma/prisma-client");
 
 const all = async (req, res) => {
     const lang = req.query.lang || '';
+    const category_name = req.query.category_name || '';
+
     try {
         const items = await prisma.items_header.findMany(lang && {
-            where: { lang }
+            where: { lang, category_name }
         });
         res.status(200).json(items);
     } catch (error) {
