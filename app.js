@@ -20,7 +20,7 @@ app.use('/', require('./routes/index'));
 app.use('/api/user', require('./routes/users'));
 app.use('/api/categories', require('./routes/category'));
 app.use('/api/items', require('./routes/items'));
-app.use('/api/items/popular', require('./routes/home_page_popular_items'));
+app.use('/api/popular/items', require('./routes/home_page_popular_items'));
 app.use('/api/logo', require('./routes/logo'));
 app.use('/api/navbar', require('./routes/navbar'));
 app.use('/api/header_icons', require('./routes/header_icons'));
