@@ -25,6 +25,7 @@ model Category {
   descr String
   image String
   title String
+  category_name String?
 }
 
 model Item {
