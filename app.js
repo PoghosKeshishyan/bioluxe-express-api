@@ -51,6 +51,10 @@ app.use('/api/liked_product_heading', require('./routes/liked_product_heading'))
 app.use('/api/item_link', require('./routes/item_link'));
 app.use('/api/infoAbout_delivery', require('./routes/infoAbout_delivery'));
 app.use('/api/categories_link', require('./routes/categories_link'));
+app.use('/api/homepage_partners_heading', require('./routes/homepage_partners_heading'));
+app.use('/api/homepage_partners', require('./routes/homepage_partners'));
+app.use('/api/item_faq_heading', require('./routes/item_faq_heading'));
+app.use('/api/item_faq', require('./routes/item_faq'));
 app.use('/api/list_endpoints', require('./routes/endpoints'));
 
 

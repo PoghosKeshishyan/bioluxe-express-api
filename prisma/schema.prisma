@@ -20,11 +20,11 @@ model User {
 }
 
 model Category {
-  id    String @id @default(uuid())
-  lang  String
-  descr String
-  image String
-  title String
+  id            String  @id @default(uuid())
+  lang          String
+  descr         String
+  image         String
+  title         String
   category_name String?
 }
 
@@ -34,6 +34,8 @@ model Item {
   product_number String  @unique
   price          Float
   heart_icon     Boolean
+
+  color String?
 
   title            Json
   btn_text         Json
@@ -67,7 +69,7 @@ model HomePagePopularItem {
   id        String   @id @default(uuid())
   itemId    String
   item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  order     Int? 
+  order     Int?
   createdAt DateTime @default(now())
 }
 
@@ -137,7 +139,7 @@ model Header_icon {
 }
 
 model Language {
-  id    String @id @default(uuid())
+  id    String  @id @default(uuid())
   label String
   image String
   lang  String?
@@ -339,4 +341,28 @@ model Categories_link {
   sort_by   String
   from      String
   to        String
+}
+
+model Homepage_partners_heading {
+  id      String @id @default(uuid())
+  lang    String
+  heading String
+}
+
+model Homepage_partner {
+  id    String @id @default(uuid())
+  image String
+}
+
+model Item_faq_heading {
+  id      String @id @default(uuid())
+  lang    String
+  heading String
+}
+
+model Item_faq {
+  id       String @id @default(uuid())
+  lang     String
+  question String
+  answer   String
 }
