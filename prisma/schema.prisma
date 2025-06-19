@@ -34,8 +34,9 @@ model Item {
   product_number String  @unique
   price          Float
   heart_icon     Boolean
-
-  color String?
+  color          String
+  size           String
+  group_code     String?
 
   title            Json
   btn_text         Json
@@ -43,9 +44,7 @@ model Item {
   product_material Json
   about_delivery   Json
 
-  images ProductImage[]
-  sizes  ProductSize[]
-
+  images              ProductImage[]
   createdAt           DateTime              @default(now())
   HomePagePopularItem HomePagePopularItem[]
 }
@@ -53,14 +52,6 @@ model Item {
 model ProductImage {
   id        String @id @default(uuid())
   image     String
-  productId String
-  product   Item   @relation(fields: [productId], references: [id], onDelete: Cascade)
-}
-
-model ProductSize {
-  id        String @id @default(uuid())
-  size      String
-  status    String
   productId String
   product   Item   @relation(fields: [productId], references: [id], onDelete: Cascade)
 }

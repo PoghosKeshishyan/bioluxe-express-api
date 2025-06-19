@@ -1,20 +1,29 @@
 const { prisma } = require("../prisma/prisma-client");
 
 const all = async (req, res) => {
-    const { category } = req.query;
-
     try {
         const items = await prisma.item.findMany({
-            where: category ? { category_name: category } : undefined,
-            include: {
-                images: true,
-                sizes: true,
-            }
+            orderBy: { createdAt: 'desc' },
         });
         res.status(200).json(items);
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: "Failed to retrieve items" });
+    }
+};
+
+const popular = async (req, res) => {
+    try {
+        const popularItems = await prisma.homePagePopularItem.findMany({
+            orderBy: { order: 'asc' },
+            include: {
+                item: true,
+            },
+        });
+        res.status(200).json(popularItems.map(p => p.item));
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to retrieve popular items" });
     }
 };
 
@@ -25,10 +34,6 @@ const latest = async (req, res) => {
                 createdAt: 'desc'
             },
             take: 4,
-            include: {
-                images: true,
-                sizes: true
-            }
         });
 
         res.status(200).json(items);
@@ -44,17 +49,20 @@ const item = async (req, res) => {
     try {
         const found = await prisma.item.findUnique({
             where: { id },
-            include: {
-                images: true,
-                sizes: true,
-            }
         });
 
         if (!found) {
             return res.status(404).json({ message: "Item not found" });
         }
 
-        res.status(200).json(found);
+        const relatedItems = await prisma.item.findMany({
+            where: {
+                group_code: found.group_code,
+                id: { not: id },
+            },
+        });
+
+        res.status(200).json({ item: found, relatedItems });
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: "Failed to retrieve item" });
@@ -72,15 +80,18 @@ const add = async (req, res) => {
         descr,
         product_material,
         about_delivery,
-        images,
-        sizes
+        color,
+        size,
+        group_code,
+        images = [] 
     } = req.body;
 
     if (
-        !category_name || !product_number || !price || !heart_icon === undefined ||
-        !title || !btn_text || !descr || !product_material || !about_delivery
+        !category_name || !product_number || price === undefined || heart_icon === undefined ||
+        !title || !btn_text || !descr || !product_material || !about_delivery ||
+        !color || !size
     ) {
-        return res.status(400).json({ message: "All required fields must be filled" });
+        return res.status(400).json({ message: "Все обязательные поля должны быть заполнены" });
     }
 
     try {
@@ -95,28 +106,25 @@ const add = async (req, res) => {
                 descr,
                 product_material,
                 about_delivery,
+                color,
+                size,
+                group_code,
                 images: {
-                    create: images?.map((img) => ({ image: img.image })) || []
-                },
-                sizes: {
-                    create: sizes?.map((s) => ({
-                        size: s.size,
-                        status: s.status
-                    })) || []
+                    create: images.map(image => ({ image }))
                 }
             },
             include: {
-                images: true,
-                sizes: true
+                images: true
             }
         });
 
         res.status(201).json(created);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Failed to add item" });
+        res.status(500).json({ message: "Не удалось добавить товар" });
     }
 };
+
 
 const remove = async (req, res) => {
     const { id } = req.params;
@@ -145,13 +153,14 @@ const edit = async (req, res) => {
         descr,
         product_material,
         about_delivery,
-        images,
-        sizes
+        image,
+        color,
+        size,
+        group_code
     } = req.body;
 
-
     try {
-        await prisma.item.update({
+        const updated = await prisma.item.update({
             where: { id },
             data: {
                 category_name,
@@ -163,39 +172,26 @@ const edit = async (req, res) => {
                 descr,
                 product_material,
                 about_delivery,
+                image,
+                color,
+                size,
+                group_code
             }
         });
 
-        await prisma.productImage.deleteMany({ where: { productId: id } });
-        await prisma.productSize.deleteMany({ where: { productId: id } });
-
-        await prisma.item.update({
-            where: { id },
-            data: {
-                images: {
-                    create: images?.map((img) => ({ image: img.image })) || []
-                },
-                sizes: {
-                    create: sizes?.map((s) => ({
-                        size: s.size,
-                        status: s.status
-                    })) || []
-                }
-            }
-        });
-
-        res.status(200).json({ message: "Item updated successfully" });
+        res.status(200).json(updated);
     } catch (error) {
         console.error(error);
         if (error.code === 'P2025') {
             return res.status(404).json({ message: "Item not found" });
         }
-        res.status(500).json({ message: "Failed to update item" });
+        res.status(500).json({ message: "Не удалось обновить товар" });
     }
 };
 
 module.exports = {
     all,
+    popular,
     latest,
     item,
     add,
