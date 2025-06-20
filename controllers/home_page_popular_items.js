@@ -10,7 +10,6 @@ const all = async (req, res) => {
                 item: {
                     include: {
                         images: true,
-                        sizes: true,
                     }
                 }
             }
