@@ -54,6 +54,9 @@ const item = async (req, res) => {
     try {
         const found = await prisma.item.findUnique({
             where: { id },
+            include: {
+                images: true,
+            },
         });
 
         if (!found) {
@@ -64,6 +67,9 @@ const item = async (req, res) => {
             where: {
                 group_code: found.group_code,
                 id: { not: id },
+            },
+            include: {
+                images: true,
             },
         });
 
