@@ -35,6 +35,9 @@ const latest = async (req, res) => {
             orderBy: {
                 createdAt: 'desc'
             },
+            include: {
+                images: true,
+            },
             take: 4,
         });
 
@@ -85,7 +88,7 @@ const add = async (req, res) => {
         color,
         size,
         group_code,
-        images = [] 
+        images = []
     } = req.body;
 
     if (
