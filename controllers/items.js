@@ -3,7 +3,9 @@ const { prisma } = require("../prisma/prisma-client");
 const all = async (req, res) => {
     try {
         const items = await prisma.item.findMany({
-            orderBy: { createdAt: 'desc' },
+            include: {
+                images: true,
+            }
         });
         res.status(200).json(items);
     } catch (error) {

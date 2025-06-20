@@ -31,7 +31,7 @@ model Category {
 model Item {
   id             String  @id @default(uuid())
   category_name  String
-  product_number String  @unique
+  product_number String  @unique 
   price          Float
   heart_icon     Boolean
   color          String
