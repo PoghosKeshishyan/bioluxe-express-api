@@ -66,7 +66,6 @@ const item = async (req, res) => {
         const relatedItems = await prisma.item.findMany({
             where: {
                 group_code: found.group_code,
-                id: { not: id },
             },
             include: {
                 images: true,
