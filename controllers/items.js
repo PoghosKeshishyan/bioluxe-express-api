@@ -6,6 +6,9 @@ const all = async (req, res) => {
     try {
         const items = await prisma.item.findMany({
             where: category ? { category_name: category } : undefined,
+            include: {
+                images: true,
+            }
         });
 
         res.status(200).json(items);
