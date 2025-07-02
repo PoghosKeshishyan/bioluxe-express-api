@@ -1,12 +1,13 @@
 const { prisma } = require("../prisma/prisma-client");
 
 const all = async (req, res) => {
+    const { category } = req.query;
+
     try {
         const items = await prisma.item.findMany({
-            include: {
-                images: true,
-            }
+            where: category ? { category_name: category } : undefined,
         });
+
         res.status(200).json(items);
     } catch (error) {
         console.error(error);
